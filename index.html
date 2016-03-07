@@ -12,8 +12,8 @@
 
 
   <input type="text" required ng-model="userCtrl.user" placeholder="Name">
-  <input type="text" required ng-model="userCtrl.messege" placeholder="Sveiki">
-  <button type="submit">Set {{userCtrl.user}} status</button>
+  <input type="text" required ng-model="userCtrl.message" placeholder="Sveiki">
+  <button type="submit">Set {{'THe' + userCtrl.user + '!'}} status</button>
   <form>
   <hr>
 
@@ -39,7 +39,7 @@
 {{status.statuses}}
   </pre> -->
 
-  
+
 
 <article style="width:40%; float: left;" ng-controller="StatusController as statusCtrl">
   <section ng-repeat="status in statusCtrl.statuses">

@@ -1,7 +1,5 @@
 var app = angular.module('firstApp', []);
 
-var _statuses = [];
-
 
 app.service('StatusService', function (){
   var service = this;
@@ -9,27 +7,41 @@ app.service('StatusService', function (){
   // service.statuses = [];
 
   var _statuses = [];
+  var _UserStatuses = [];
 
   service.addStatus = function(newStatus) {
+    if (!!newStatus.user && !!newStatus.message) {
     _statuses.push(newStatus);
-  }
 
+    _UserStatuses.splice(0);
+    angular.copy(_statuses, _UserStatuses);
+  } else {
+    alert('User must be defined.');
+  }
+}
+
+service.getStatuses = function () {
+  return _UserStatuses;
+}
 });
 
   app.controller('UserController', function(StatusService){
 
+// idea of what should happen
 
     var vm = this;
 
-__resetForm();
+_resetForm();
 
 
 vm.setStatus = _setStatus;
 
+// implementation
+
 function _setStatus(){
   var _newStatus = {
     user: vm.user,
-    messege : vm.messege
+    message : vm.message
   }
 
 
@@ -37,16 +49,16 @@ function _setStatus(){
         console.log(JSON.stringify(_newStatus));
 
 
-        StatusService.statuses.push(_newStatus);
+        StatusService.addStatus(_newStatus);
 
-        __resetForm();
+        _resetForm();
     }
 
 
-function __resetForm(){
+function _resetForm(){
 
       vm.user = '';
-      vm.messege = '';
+      vm.message = '';
 }
 });
 
@@ -54,6 +66,6 @@ app.controller('StatusController', function (StatusService){
   var vm = this;
 
 
-  vm.statuses = StatusService.statuses;
+  vm.getStatuses = StatusService.getStatuses();
 
 });

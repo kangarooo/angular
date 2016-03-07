@@ -10,7 +10,7 @@ var _statuses = [];
 __resetForm();
 
 
-vm.setStatus = _setStatus;
+
 
     vm.setStatus = function() {
       var _newStatus = {

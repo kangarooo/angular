@@ -19,24 +19,24 @@
   <div ng-repeat="element in array">{{element}}</div>
 
 
-  <div ng-controller="StatusController as status">
+  <div ng-controller="StatusController as statusCtrl">
     <section ng-repeat="status in statusCtrl.statuses">
       <header>
         <h4>{{status.user}}</h4>
       </header>
-      <div>{{status.messege}}</div>
+      <div>{{status.message}}</div>
       <br>
       <hr>
-      <pre>
-    {{status.statuses}}
-      </pre>
+
 
     </section>
     </div>
 
 
-  Hi {{userCtrl.user}}
-
+  <!-- Hi {{userCtrl.user}}
+  <pre>
+{{status.statuses}}
+  </pre> -->
 
 
 

@@ -1,5 +1,7 @@
 var app = angular.module('firstApp', []);
 
+var _statuses = [];
+
   app.controller('UserController', function($rootScope){
     var vm = this;
 
@@ -8,12 +10,16 @@ var app = angular.module('firstApp', []);
     vm.messege = '';
 
     vm.setStatus = function() {
-      console.log('Sending user status')
-      console.log(JSON.stringify())
-      $rootScope.$broadcast('set-status', {
+      var _userToSend = {
         user: vm.user,
         messege: vm.messege
-      });
+      };
+
+        console.log('Sending user status');
+        console.log(JSON.stringify(_userToSend));
+
+
+        _statuses.push(_userToSend);
     }
 });
 
@@ -22,6 +28,6 @@ app.controller('StatusController', function ($rootScope){
   var vm = this;
 
 
-  vm.statuses = [];
+  vm.statuses = _statuses;
 
 });

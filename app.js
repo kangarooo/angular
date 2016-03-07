@@ -1,71 +1,62 @@
 var app = angular.module('firstApp', []);
 
 
-app.service('StatusService', function (){
-  var service = this;
+app.service('StatusService', function () {
+    var service = this;
 
-  // service.statuses = [];
+    var _statuses = [];
+    var _userStatuses = [];
 
-  var _statuses = [];
-  var _UserStatuses = [];
+    service.addStatus = function(newStatus) {
+        if (!_.isEmpty(newStatus.user) && !_.isEmpty(newStatus.message)) {
+            _statuses.push(newStatus);
 
-  service.addStatus = function(newStatus) {
-    if (!!newStatus.user && !!newStatus.message) {
-    _statuses.push(newStatus);
+            _userStatuses.splice(0);
+            angular.copy(_statuses, _userStatuses);
+        } else {
+            console.log('User and message must be defined.');
+        }
+    }
 
-    _UserStatuses.splice(0);
-    angular.copy(_statuses, _UserStatuses);
-  } else {
-    alert('User must be defined.');
-  }
-}
-
-service.getStatuses = function () {
-  return _UserStatuses;
-}
+    service.getStatuses = function () {
+        return _userStatuses;
+    }
 });
 
-  app.controller('UserController', function(StatusService){
-
-// idea of what should happen
-
+app.controller('UserController', function (StatusService) {
+    // idea of what should hapen
     var vm = this;
 
-_resetForm();
+    _resetForm();
 
+    vm.setStatus = _setStatus;
 
-vm.setStatus = _setStatus;
+    //implementation
 
-// implementation
-
-function _setStatus(){
-  var _newStatus = {
-    user: vm.user,
-    message : vm.message
-  }
-
+    function _setStatus() {
+        var __newStatus = {
+            user: vm.user,
+            message: vm.message,
+            date: vm.date
+        };
 
         console.log('Sending user status:');
-        console.log(JSON.stringify(_newStatus));
+        console.log(JSON.stringify(__newStatus));
 
-
-        StatusService.addStatus(_newStatus);
+        StatusService.addStatus(__newStatus);
 
         _resetForm();
     }
 
-
-function _resetForm(){
-
-      vm.user = '';
-      vm.message = '';
-}
+    function _resetForm() {
+        vm.user = '';
+        vm.message = '';
+        vm.date = new Date();
+    }
 });
 
-app.controller('StatusController', function (StatusService){
-  var vm = this;
+app.controller('StatusController', function (StatusService) {
+    var vm = this;
 
-
-  vm.getStatuses = StatusService.getStatuses();
-
+    vm.statuses = StatusService.getStatuses();
 });

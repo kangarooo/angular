@@ -1,0 +1,31 @@
+<html ng-app="firstApp">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+
+
+
+</head>
+<body>
+  <ng-form="statusForm" ng-submit="userCtrl.setStatus()" ng-controller="UserController as userCtrl">
+
+
+  <input type="text" ng-model="userCtrl.user" placeholder="Name">
+  <input type="text" ng-model="userCtrl.messege" placeholder="Sveiki">
+  <button type="submit">Set status</button>
+  </ng-form>
+  <hr>
+
+
+
+  Hi {{userCtrl.user}}
+
+
+
+
+
+  <script src="bower_components/angular/angular.js"></script>
+  <script src="app.js">
+  </script>
+</body>
+</html>

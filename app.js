@@ -8,12 +8,15 @@ var app = angular.module('firstApp', []);
     vm.messege = '';
 
     vm.setStatus = function() {
-      console.log('Sending user status')
-      console.log(JSON.stringify())
-      $rootScope.$broadcast('set-status', {
+      var _userToSend ={
         user: vm.user,
         messege: vm.messege
-      });
+      };
+
+      console.log('Sending user status:');
+      console.log(JSON.stringify(_userToSend));
+
+      $rootScope.$broadcast('set-status', _userToSend);
     }
 });
 

@@ -7,13 +7,13 @@
 
 </head>
 <body>
-  <ng-form="statusForm" ng-submit="userCtrl.setStatus()" ng-controller="UserController as userCtrl">
+  <form name="statusForm" ng-controller="UserController as userCtrl" ng-submit="userCtrl.setStatus()">
 
 
   <input type="text" ng-model="userCtrl.user" placeholder="Name">
-  <input type="text" ng-model="userCtrl.messege" placeholder="Sveiki">
-  <button type="submit">Set status</button>
-  </ng-form>
+  <input type="text" ng-model="userCtrl.message" placeholder="Sveiki">
+  <button type="submit">Set {{userCtrl.user}} status</button>
+  </form>
   <hr>
 
 

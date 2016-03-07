@@ -10,19 +10,29 @@
   <form name="statusForm" ng-controller="UserController as userCtrl" ng-submit="userCtrl.setStatus()">
 
 
-  <input type="text" ng-model="userCtrl.user" placeholder="Name">
-  <input type="text" ng-model="userCtrl.messege" placeholder="Sveiki">
+  <input type="text" required ng-model="userCtrl.user" placeholder="Name">
+  <input type="text" required ng-model="userCtrl.messege" placeholder="Sveiki">
   <button type="submit">Set {{userCtrl.user}} status</button>
   <form>
   <hr>
+
+  <div ng-repeat="element in array">{{element}}</div>
+
+
   <div ng-controller="StatusController as status">
+    <section ng-repeat="status in statusCtrl.statuses">
+      <header>
+        <h4>{{status.user}}</h4>
+      </header>
+      <div>{{status.messege}}</div>
+      <br>
+      <hr>
+      <pre>
     {{status.statuses}}
-    <pre>
+      </pre>
 
-    </pre>
-
-  </div>
-
+    </section>
+    </div>
 
 
   Hi {{userCtrl.user}}

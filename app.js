@@ -2,7 +2,21 @@ var app = angular.module('firstApp', []);
 
 var _statuses = [];
 
-  app.controller('UserController', function(){
+
+app.service('StatusService', function (){
+  var service = this;
+
+  // service.statuses = [];
+
+  var _statuses = [];
+
+  service.addStatus = function(newStatus) {
+    _statuses.push(newStatus);
+  }
+
+});
+
+  app.controller('UserController', function(StatusService){
 
 
     var vm = this;
@@ -23,7 +37,7 @@ function _setStatus(){
         console.log(JSON.stringify(_newStatus));
 
 
-        _statuses.push(_newStatus);
+        StatusService.statuses.push(_newStatus);
 
         __resetForm();
     }
@@ -36,10 +50,10 @@ function __resetForm(){
 }
 });
 
-app.controller('StatusController', function (){
+app.controller('StatusController', function (StatusService){
   var vm = this;
 
 
-  vm.statuses = _statuses;
+  vm.statuses = StatusService.statuses;
 
 });

@@ -7,6 +7,7 @@
 
 </head>
 <body>
+
   <form name="statusForm" ng-controller="UserController as userCtrl" ng-submit="userCtrl.setStatus()">
 
 
@@ -38,6 +39,19 @@
 {{status.statuses}}
   </pre> -->
 
+  
+
+<article style="width:40%; float: left;" ng-controller="StatusController as statusCtrl">
+  <section ng-repeat="status in statusCtrl.statuses">
+    <header>
+      <h4>{{status.user}}</h4>
+    </header>
+    <br>
+    <textarea>{{status.message}}</textarea>
+
+  </section>
+
+</article>
 
 
 

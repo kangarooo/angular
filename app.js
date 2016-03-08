@@ -3,8 +3,11 @@ var app = angular.module('firstApp', []);
 app.service('UserService', function () {
    var service = this;
 
+
+   var USERNAME_KEY = 'username';
+
     var _user = {
-        username: undefined,
+        username: localStorage.getItem(USERNAME_KEY),
         //TODO: implement password support in the future
         password: undefined
     };
@@ -16,15 +19,16 @@ app.service('UserService', function () {
 
     function _setUser(username) {
         _user.username = username;
+        localStorage.setItem(USERNAME_KEY, username);
     }
 
     function _removeUser() {
-        _setUser(undefined);
+        _setUser(null);
     }
 
     function _hasUser() {
         //FIXME: null is passing the test :/
-        return !_.isUndefined(_getUsername());
+        return !_.isNull(_getUsername());
     }
 
     function _getUsername() {

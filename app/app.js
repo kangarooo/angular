@@ -54,30 +54,29 @@ app.service('StatusService', function ($http) {
 
     service.getStatuses = _getStatuses;
     service.addStatus = _addStatus;
+    service.getUsers = _getUsers;
 
 
     init();
 
     function init() {
-      var _getRequest = {
+        var _getRequest = {
+            method: 'GET',
+            url: SERVER_URL
+        };
 
-      };
+        $http(_getRequest).then(function (res) {
+            _statuses = res.data;
+
+            _updateUsers();
+        });
     }
 
-    var _getRequest = {
+    function _getStatuses() {
+        return _userStatuses;
+    }
 
-        method: 'GET',
-        url: SERVER_URL
-    };
-
-    $http(_getRequest).then(function (res) {
-        _statuses = res.data;
-
-        _userStatuses.splice(0);
-        angular.copy(_statuses, _userStatuses);
-    });
-
-    service.addStatus = function (newStatus) {
+    function _addStatus(newStatus) {
         if (!_.isEmpty(newStatus.user) && !_.isEmpty(newStatus.message)) {
             var _postRequest = {
                 method: 'POST',
@@ -88,11 +87,13 @@ app.service('StatusService', function ($http) {
             $http(_postRequest).then(__updateStatuses);
 
             function __updateStatuses(res) {
-                _statuses.push(res.data);
+                if (!!res) {
+                    _statuses.push(res.data);
 
 
-                _userStatuses.splice(0);
-                angular.copy(_statuses, _userStatuses);
+                    _updateUsers();
+                }
+
             }
         } else {
 
@@ -100,9 +101,34 @@ app.service('StatusService', function ($http) {
         }
     };
 
-    service.getStatuses = function () {
-        return _userStatuses;
-    };
+
+    function _getUsers() {
+        return _users;
+    }
+
+    function _updateUsers() {
+        _userStatuses.splice(0);
+        angular.copy(_statuses, _userStatuses);
+
+        _users.splice(0);
+        var userNames = _.uniq(_.map(_statuses, 'user'));
+
+        _.each(userNames, function getUserStatus(userName) {
+            var newUser = {
+                name: userName
+            };
+
+            var userStatus = _.find(_statuses, function(status) {
+                return status.user === userName;
+            });
+
+            newUser.date = userStatus.date;
+            newUser.message = userStatus.message;
+
+            _users.push(newUser);
+        });
+    }
+
 });
 
 app.controller('MainController', function (UserService) {
@@ -161,5 +187,6 @@ app.controller('UserController', function (UserService, StatusService) {
 app.controller('StatusController', function (StatusService) {
     var vm = this;
 
-    vm.statuses = StatusService.getStatuses();
+
+    vm.users = StatusService.getUsers();
 });

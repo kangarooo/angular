@@ -70,13 +70,13 @@
 
     <article ng-controller="StatusController as statusCtrl">
 
-        <section ng-repeat="status in statusCtrl.statuses | orderBy:'-date' track by status.id">
+        <section ng-repeat="user in statusCtrl.users">
 
             <header>
-                <h4>{{status.user}}</h4>
-                <span>{{status.date | date}}</span>
+                <h4>{{user.name}}</h4>
+                <span>{{user.date | date}}</span>
             </header>
-            <div>{{status.message}}</div>
+            <div>{{user.message}}</div>
             <hr>
         </section>
     </article>

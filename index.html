@@ -11,8 +11,13 @@
         <div class="navbar-header">
             <a class="navbar-brand" href="#">
                 <span>MyFacebook</span>
-<span ng-if="mainCtrl.hasUser()"> - {{mainCtrl.getUsername()}}</span>
+                <span ng-if="mainCtrl.hasUser()"> - {{mainCtrl.getUsername()}}</span>
             </a>
+            <button type="button"
+                    ng-if="mainCtrl.hasUser()"
+                    ng-click="mainCtrl.removeUser()"
+                    class="btn btn-warning navbar-btn">Logout
+            </button>
         </div>
     </div>
 </nav>
@@ -57,7 +62,7 @@
     <hr/>
 
     <article ng-controller="StatusController as statusCtrl">
-        <section ng-repeat="status in statusCtrl.statuses">
+        <section ng-repeat="status in statusCtrl.statuses | orderBy:'-date'">
             <header>
                 <h4>{{status.user}}</h4>
                 <span>{{status.date | date}}</span>

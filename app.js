@@ -18,7 +18,12 @@ app.service('UserService', function () {
 
     function _setUser(username) {
         _user.username = username;
-        localStorage.setItem(USERNAME_KEY, username);
+
+        if (_.isNull(username)) {
+           localStorage.removeItem(USERNAME_KEY);
+        } else {
+            localStorage.setItem(USERNAME_KEY, username);
+        }
     }
 
     function _removeUser() {
@@ -61,6 +66,7 @@ app.controller('MainController', function (UserService) {
 
     vm.hasUser = UserService.hasUser;
     vm.getUsername = UserService.getUsername;
+    vm.removeUser = UserService.removeUser;
 });
 
 app.controller('LoginController', function (UserService) {

@@ -54,7 +54,6 @@
                    required
                    ng-model="userCtrl.message"
                    placeholder="E.g. 'HELLO FRIENDS!'"/>
-            <input class="form-control" type="date" ng-model="userCtrl.date"/>
         </div>
         <button class="btn btn-default" type="submit">Set status</button>
     </form>
@@ -62,7 +61,7 @@
     <hr/>
 
     <article ng-controller="StatusController as statusCtrl">
-        <section ng-repeat="status in statusCtrl.statuses | orderBy:'-date'">
+        <section ng-repeat="status in statusCtrl.statuses | orderBy:'-date' track by status.id">
             <header>
                 <h4>{{status.user}}</h4>
                 <span>{{status.date | date}}</span>

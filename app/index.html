@@ -60,6 +60,13 @@
                    ng-model="userCtrl.message"
                    placeholder="E.g. 'HELLO FRIENDS!'"/>
 
+                   <!-- <textarea class="form-control"
+                          type="text"
+                          required
+                          ng-model="userCtrl.message"
+                          placeholder="E.g. 'HELLO FRIENDS!'"/>
+                   </textarea> -->
+
             <!-- <input class="form-control" type="date" ng-model="userCtrl.date"/> -->
 
         </div>
@@ -70,7 +77,7 @@
 
     <article ng-controller="StatusController as statusCtrl">
 
-        <section ng-repeat="user in statusCtrl.users">
+        <section ng-if="!!user.name" ng-repeat="user in statusCtrl.users" | orderBy:'-date' track by user.name>
 
             <header>
                 <h4>{{user.name}}</h4>

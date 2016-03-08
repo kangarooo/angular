@@ -1,65 +1,4 @@
-<<<<<<< HEAD
 
-<!DOCTYPE html>
-<html ng-app="firstApp">
-
-<head>
-    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
-</head>
-
-<body ng-controller="MainController as mainCtrl">
-<nav class="navbar navbar-default"...>
-
-<div id="guest-space" class="container">
-<p>
-  LOGIN FIRST!
-</p>
-</div>
-
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="#">MyFacebook</a>
-        </div>
-    </div>
-</nav>
-
-
-
-<div class="container">
-    <form name="statusForm"
-          ng-controller="UserController as userCtrl"
-          ng-submit="userCtrl.setStatus()">
-        <div class="form-group">
-            <input class="form-control"
-                   type="text"
-                   required
-                   ng-model="userCtrl.user"
-                   placeholder="Your name">
-            <input class="form-control"
-                   type="text"
-                   required
-                   ng-model="userCtrl.message"
-                   placeholder="E.g. 'HELLO FRIENDS!'">
-            <input class="form-control" type="date" ng-model="userCtrl.date">
-        </div>
-        <button class="btn btn-default" type="submit">Set status</button>
-    </form>
-
-    <hr>
-
-    <article ng-controller="StatusController as statusCtrl">
-        <section ng-repeat="status in statusCtrl.statuses">
-            <header>
-                <h4>{{status.user}}</h4>
-                <span>{{status.date | date}}</span>
-            </header>
-            <div>{{status.message}}</div>
-            <hr>
-        </section>
-    </article>
-
-</div>
-=======
 <!DOCTYPE html5>
 
 <html ng-app="firstApp">
@@ -127,7 +66,7 @@
 
 
 
->>>>>>> remote/develop3
+
 
 <script src="bower_components/lodash/dist/lodash.js"></script>
 <script src="bower_components/angular/angular.js"></script>

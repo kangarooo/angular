@@ -21,7 +21,8 @@ app.service('UserService', function () {
 
         if (_.isNull(username)) {
 
-          localStorage.removeItem(USERNAME_KEY);
+            localStorage.removeItem(USERNAME_KEY);
+
         } else {
         localStorage.setItem(USERNAME_KEY, username);
       }
@@ -51,46 +52,37 @@ app.service('StatusService', function ($http) {
     var _userStatuses = [];
 
     var _getRequest = {
-      method: 'GET',
-      url: SERVER_URL
+
+        method: 'GET',
+        url: SERVER_URL
     };
 
-    var _postRequest = {
-      method: 'POST',
-      url: SERVER_URL
-    };
+    $http(_getRequest).then(function (res) {
+        _statuses = res.data;
 
-
-    $http(_getRequest).then(function(res){
-      _statuses = res.data;
-
-      _userStatuses.splice(0);
-      angular.copy(_statuses, _userStatuses);
-
-    })
+        _userStatuses.splice(0);
+        angular.copy(_statuses, _userStatuses);
+    });
 
     service.addStatus = function (newStatus) {
         if (!_.isEmpty(newStatus.user) && !_.isEmpty(newStatus.message)) {
-            _statuses.push(newStatus);
+            var _postRequest = {
+                method: 'POST',
+                url: SERVER_URL,
+                data: newStatus
+            };
+
+            $http(_postRequest).then(__updateStatuses);
+
+            function __updateStatuses(res) {
+                _statuses.push(res.data);
 
 
-                var _postRequest = {
-                  method: 'POST',
-                  url: SERVER_URL,
-                  data: newStatus
-                };
-
-
-                $http(_postRequest).then(__updateStatuses);
-
-            function __updateStatuses(true) {
-              _statuses.push(newStatus);
-
-              _userStatuses.splice(0);
-              angular.copy(_statuses, _userStatuses);
-
+                _userStatuses.splice(0);
+                angular.copy(_statuses, _userStatuses);
             }
-          } else {
+        } else {
+
             console.log('User and message must be defined.');
         }
     }
@@ -147,7 +139,9 @@ app.controller('UserController', function (UserService, StatusService) {
 
     function _resetForm() {
         vm.message = '';
+
         // vm.date = new Date();
+
     }
 });
 

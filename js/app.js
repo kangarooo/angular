@@ -5,6 +5,41 @@ var app = angular.module('firstApp', []);
 
 // Singleton - object is itionalised once, and it stays forever, in angular it's called SERVICE
 
+app.service('UserService', function(){
+
+  var service = this;
+
+  var _user = {
+    username: undefined,
+    //TODO: implement password support in the future
+    password: undefined
+  };
+
+  service.setUser = _setUser;
+  service.removeUser = _removeUser;
+  service.getUsername = _getUsername;
+  service.hasUser = _hasUser;
+
+  function _setUser(username) {
+    _user.username = username;
+  }
+
+  function _removeUser() {
+    _setUser(undefined);
+  }
+
+  function _hasUser (){
+    return !_.isUndefined(_getUsername())
+  }
+
+  function _getUsername() {
+    return _user.username;
+  }
+
+});
+
+
+
 app.service('StatusService', function() {
   var service = this;
 
@@ -16,6 +51,7 @@ app.service('StatusService', function() {
     if (!_.isEmpty(newStatus.user) && !_.isEmpty(newStatus.message)){
       _statuses.push(newStatus);
 
+      // old statuses
       _userStatuses.splice(0);
       angular.copy(_statuses, _userStatuses);
     }else{
@@ -31,6 +67,12 @@ app.service('StatusService', function() {
 
 });
 
+app.controller('MainController', function(UserService) {
+  var vm = this;
+
+  vm.hasUser = UserService.hasUser;
+});
+
 app.controller('UserController', function(StatusService){
   //idea of what should happen
   var vm = this;
@@ -44,7 +86,8 @@ app.controller('UserController', function(StatusService){
   function _setStatus(){
     var _newStatus = {
       user: vm.user,
-      message: vm.message
+      message: vm.message,
+      date: vm.date
     };
 
     console.log('Sending user status');
@@ -59,6 +102,7 @@ app.controller('UserController', function(StatusService){
   function _resetForm(){
     vm.user = '';
     vm.message = '';
+    vm.date = new Date();
   }
 });
 

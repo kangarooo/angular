@@ -1,10 +1,12 @@
 var app = angular.module('firstApp', []);
 
 app.service('UserService', function () {
-   var service = this;
+    var service = this;
+
+    var USERNAME_KEY = 'username';
 
     var _user = {
-        username: undefined,
+        username: localStorage.getItem(USERNAME_KEY),
         //TODO: implement password support in the future
         password: undefined
     };
@@ -16,15 +18,15 @@ app.service('UserService', function () {
 
     function _setUser(username) {
         _user.username = username;
+        localStorage.setItem(USERNAME_KEY, username);
     }
 
     function _removeUser() {
-        _setUser(undefined);
+        _setUser(null);
     }
 
     function _hasUser() {
-        //FIXME: null is passing the test :/
-        return !_.isUndefined(_getUsername());
+        return !_.isNull(_getUsername());
     }
 
     function _getUsername() {
@@ -38,7 +40,7 @@ app.service('StatusService', function () {
     var _statuses = [];
     var _userStatuses = [];
 
-    service.addStatus = function(newStatus) {
+    service.addStatus = function (newStatus) {
         if (!_.isEmpty(newStatus.user) && !_.isEmpty(newStatus.message)) {
             _statuses.push(newStatus);
 
@@ -54,14 +56,15 @@ app.service('StatusService', function () {
     }
 });
 
-app.controller('MainController', function(UserService) {
+app.controller('MainController', function (UserService) {
     var vm = this;
 
     vm.hasUser = UserService.hasUser;
+    vm.getUsername = UserService.getUsername;
 });
 
 app.controller('LoginController', function (UserService) {
-   var vm = this;
+    var vm = this;
 
     vm.username = '';
 
@@ -77,26 +80,26 @@ app.controller('UserController', function (UserService, StatusService) {
     var vm = this;
 
     _resetForm();
-    
+
     vm.setStatus = _setStatus;
-    
+
     //implementation
-    
+
     function _setStatus() {
         var __newStatus = {
             user: UserService.getUsername(),
             message: vm.message,
             date: vm.date
         };
-        
+
         console.log('Sending user status:');
         console.log(JSON.stringify(__newStatus));
-        
+
         StatusService.addStatus(__newStatus);
 
         _resetForm();
     }
-    
+
     function _resetForm() {
         vm.message = '';
         vm.date = new Date();
@@ -105,6 +108,6 @@ app.controller('UserController', function (UserService, StatusService) {
 
 app.controller('StatusController', function (StatusService) {
     var vm = this;
-    
+
     vm.statuses = StatusService.getStatuses();
 });

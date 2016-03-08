@@ -58,6 +58,7 @@ app.controller('MainController', function(UserService) {
     var vm = this;
 
     vm.hasUser = UserService.hasUser;
+    vm.getUsername = UserService.getUsername;
 });
 
 app.controller('LoginController', function (UserService) {
@@ -77,26 +78,26 @@ app.controller('UserController', function (UserService, StatusService) {
     var vm = this;
 
     _resetForm();
-    
+
     vm.setStatus = _setStatus;
-    
+
     //implementation
-    
+
     function _setStatus() {
         var __newStatus = {
             user: UserService.getUsername(),
             message: vm.message,
             date: vm.date
         };
-        
+
         console.log('Sending user status:');
         console.log(JSON.stringify(__newStatus));
-        
+
         StatusService.addStatus(__newStatus);
 
         _resetForm();
     }
-    
+
     function _resetForm() {
         vm.message = '';
         vm.date = new Date();
@@ -105,6 +106,6 @@ app.controller('UserController', function (UserService, StatusService) {
 
 app.controller('StatusController', function (StatusService) {
     var vm = this;
-    
+
     vm.statuses = StatusService.getStatuses();
 });

@@ -39,7 +39,7 @@ app.service('UserService', function () {
     }
 });
 
-app.service('StatusService', function ($http) {
+app.service('StatusService', function ($http, $timeout) {
     var service = this;
 
     var SERVER_URL = 'http://10.0.1.86:8080/statuses';
@@ -64,6 +64,8 @@ app.service('StatusService', function ($http) {
             _statuses = res.data;
 
             _updateUsers();
+
+            $timeout(init, 4000);
         });
     }
 
@@ -99,7 +101,8 @@ app.service('StatusService', function ($http) {
 
     function _updateUsers() {
         _userStatuses.splice(0);
-        angular.copy(_statuses, _userStatuses);
+        var _sortedStatuses = _.sortBy(_statuses, 'date');
+        angular.copy(_sortedStatuses.reverse(), _userStatuses);
 
         _users.splice(0);
         var userNames = _.uniq(_.map(_statuses, 'user'));
@@ -109,14 +112,16 @@ app.service('StatusService', function ($http) {
                 name: userName
             };
 
-            var userStatus = _.find(_statuses, function(status) {
+            var userStatus = _.find(_userStatuses, function (status) {
                 return status.user === userName;
             });
 
-            newUser.date = userStatus.date;
-            newUser.message = userStatus.message;
+            if (!!userName && !!userStatus) {
+                newUser.date = userStatus.date;
+                newUser.message = userStatus.message;
 
-            _users.push(newUser);
+                _users.push(newUser);
+            }
         });
     }
 });

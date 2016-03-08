@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
 </head>
 
-<body>
+<body ng-controller="MainController as mainCtrl">
 <nav class="navbar navbar-default">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -14,27 +14,44 @@
     </div>
 </nav>
 
-<div class="container">
+<div id="guest-space"
+     class="container"
+     ng-if="!mainCtrl.hasUser()"
+     ng-controller="LoginController as loginCtrl">
+    <form name="userForm" ng-submit="loginCtrl.login()">
+        <div class="form-group">
+            <input class="form-control"
+                   type="text"
+                   required
+                   autofocus
+                   ng-model="loginCtrl.username"
+                   placeholder="Username"/>
+            <input class="form-control"
+                   type="password"
+                   placeholder="Password"/>
+        </div>
+        <button type="submit">Login</button>
+    </form>
+</div>
+
+<div id="user-space"
+     class="container"
+     ng-if="mainCtrl.hasUser()"
+     ng-controller="UserController as userCtrl">
     <form name="statusForm"
-          ng-controller="UserController as userCtrl"
           ng-submit="userCtrl.setStatus()">
         <div class="form-group">
             <input class="form-control"
                    type="text"
                    required
-                   ng-model="userCtrl.user"
-                   placeholder="Your name">
-            <input class="form-control"
-                   type="text"
-                   required
                    ng-model="userCtrl.message"
-                   placeholder="E.g. 'HELLO FRIENDS!'">
-            <input class="form-control" type="date" ng-model="userCtrl.date">
+                   placeholder="E.g. 'HELLO FRIENDS!'"/>
+            <input class="form-control" type="date" ng-model="userCtrl.date"/>
         </div>
         <button class="btn btn-default" type="submit">Set status</button>
     </form>
 
-    <hr>
+    <hr/>
 
     <article ng-controller="StatusController as statusCtrl">
         <section ng-repeat="status in statusCtrl.statuses">

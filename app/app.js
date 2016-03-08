@@ -49,6 +49,20 @@ app.service('StatusService', function ($http) {
 
     var _statuses = [];
     var _userStatuses = [];
+    var _users = [];
+
+
+    service.getStatuses = _getStatuses;
+    service.addStatus = _addStatus;
+
+
+    init();
+    
+    function init() {
+      var _getRequest = {
+
+      }
+    }
 
     var _getRequest = {
 

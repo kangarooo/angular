@@ -45,7 +45,7 @@ app.service('StatusService', function ($http) {
     var service = this;
 
 
-    var SERVER_URL = 'http://localhost:8080/statuses';
+    var SERVER_URL = 'http://10.0.1.86:8080/statuses';
 
     var _statuses = [];
     var _userStatuses = [];
@@ -61,8 +61,12 @@ app.service('StatusService', function ($http) {
     };
 
 
-    $http(_getRequest).then(function(statuses){
-      _statuses = statuses;
+    $http(_getRequest).then(function(res){
+      _statuses = res.data;
+
+      _userStatuses.splice(0);
+      angular.copy(_statuses, _userStatuses);
+
     })
 
     service.addStatus = function (newStatus) {
@@ -77,9 +81,9 @@ app.service('StatusService', function ($http) {
                 };
 
 
-                $http(_postRequest);
+                $http(_postRequest).then(__updateStatuses);
 
-            function __updateStatuses() {
+            function __updateStatuses(true) {
               _statuses.push(newStatus);
 
               _userStatuses.splice(0);

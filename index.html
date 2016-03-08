@@ -19,6 +19,11 @@
                     class="btn btn-warning navbar-btn">Logout
             </button>
         </div>
+        <button type="button" class="btn btn-danger">Logout</button>
+        <button type="button" class="btn btn-warning" ng-if="mainCtrl.hasUser()" ng-click"mainCtrl.removeUser()">Warning Logout - {{mainCtrl.getUsername()}}</button>
+
+        <!--  -->
+
     </div>
 </nav>
 

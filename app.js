@@ -20,10 +20,17 @@ app.service('UserService', function () {
         _user.username = username;
 
         if (_.isNull(username)) {
+<<<<<<< Updated upstream
            localStorage.removeItem(USERNAME_KEY);
         } else {
             localStorage.setItem(USERNAME_KEY, username);
         }
+=======
+          localStorage.removeItem(USERNAME_KEY);
+        } else {
+        localStorage.setItem(USERNAME_KEY, username);
+      }
+>>>>>>> Stashed changes
     }
 
     function _removeUser() {

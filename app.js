@@ -1,6 +1,32 @@
 var app = angular.module('firstApp', []);
 
 
+app.service('UserService', function (){
+  var service = this;
+
+  var _user = {
+    username: undefined,
+    password: undefined
+  };
+
+  service.setUser = _setUser {
+    _user.username = username;
+
+  };
+
+  service.getUsername = function () {
+    return _user.username;
+  };
+
+  service.hasUser = function () {
+    return !_.isUndefined(_user.username);
+  }
+
+  function _getUsername() {
+    return _user.username;
+  }
+})
+
 app.service('StatusService', function () {
     var service = this;
 

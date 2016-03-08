@@ -21,8 +21,7 @@ app.service('UserService', function () {
 
         if (_.isNull(username)) {
 
-            localStorage.removeItem(USERNAME_KEY);
-
+          localStorage.removeItem(USERNAME_KEY);
         } else {
         localStorage.setItem(USERNAME_KEY, username);
       }

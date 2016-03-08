@@ -57,11 +57,11 @@ app.service('StatusService', function ($http) {
 
 
     init();
-    
+
     function init() {
       var _getRequest = {
 
-      }
+      };
     }
 
     var _getRequest = {
@@ -98,11 +98,11 @@ app.service('StatusService', function ($http) {
 
             console.log('User and message must be defined.');
         }
-    }
+    };
 
     service.getStatuses = function () {
         return _userStatuses;
-    }
+    };
 });
 
 app.controller('MainController', function (UserService) {

@@ -191,11 +191,26 @@ app.controller('StatusController', function (StatusService) {
 
 
 app.filter('orderUsers', function () {
-    var lastList = [];
+
+    var lastLists = {};
+
 
     return function orderUsersFilter(userMap, mapName) {
         var userList = _.map(userMap, generateNewUser);
         var newList = _.sortBy(userList, 'date').reverse();
+
+
+        if (!!mapName) {
+            if (JSON.stringify(lastLists[mapName]) !== JSON.stringify(newList)) {
+                lastLists[mapName] = newList;
+            }
+
+            return lastLists[mapName];
+        } else {
+            //FIXME: digest loop with no name
+            return newList;
+        }
+
 
 
         if (!!mapName) {
@@ -205,20 +220,6 @@ app.filter('orderUsers', function () {
 
               return lastLists[mapName];
 
-        } else {
-          //FIXME: digest loop with no name
-          return newList;
 
-          function generateNewUser(status, name) {
-              var newUser = {
-                  name: name
-              };
-
-              _.defaults(newUser, status);
-
-              return newUser;
-          }
-
-        }
-    };
+    }
 });

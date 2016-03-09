@@ -188,3 +188,27 @@ app.controller('StatusController', function (StatusService) {
 
     vm.users = StatusService.getUsers();
 });
+
+
+app.filter('orderUsers', function() {
+  var newList = _map.(userMap, generateNewUser);
+
+  return function orderUsersFilter(status, name) {
+      var newUser = {
+        name: name
+
+      };
+
+      _.defaults(newUser, status);
+
+      return newUser;
+    }
+
+    if (JSON.stringify(lastList) !== JSON.stringify(newList)
+
+
+    ) {
+
+    })
+  }
+})

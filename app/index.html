@@ -61,10 +61,10 @@
     <hr/>
 
     <article ng-controller="StatusController as statusCtrl">
-        <section ng-if="!!user.name"
-                 ng-repeat="user in statusCtrl.users | orderBy:'-date' track by user.name">
+        <section ng-if="!!username"
+                 ng-repeat="(username, user) in statusCtrl.users track by username">
             <header>
-                <h4>{{user.name}}</h4>
+                <h4>{{username}}</h4>
                 <span>{{user.date | date}}</span>
             </header>
             <div>{{user.message}}</div>

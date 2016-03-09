@@ -45,10 +45,8 @@ app.service('StatusService', function ($http, $timeout) {
     var SERVER_URL = 'http://10.0.1.86:8080/statuses';
 
     var _statuses = [];
-    var _userStatuses = [];
-    var _users = [];
+    var _users = {};
 
-    service.getStatuses = _getStatuses;
     service.addStatus = _addStatus;
     service.getUsers = _getUsers;
 
@@ -67,10 +65,6 @@ app.service('StatusService', function ($http, $timeout) {
 
             $timeout(init, 4000);
         });
-    }
-
-    function _getStatuses() {
-        return _userStatuses;
     }
 
     function _addStatus(newStatus) {
@@ -100,27 +94,21 @@ app.service('StatusService', function ($http, $timeout) {
     }
 
     function _updateUsers() {
-        _userStatuses.splice(0);
-        var _sortedStatuses = _.sortBy(_statuses, 'date');
-        angular.copy(_sortedStatuses.reverse(), _userStatuses);
+        var _sortedStatuses = _.sortBy(_statuses, 'date').reverse();
 
-        _users.splice(0);
         var userNames = _.uniq(_.map(_statuses, 'user'));
 
         _.each(userNames, function getUserStatus(userName) {
-            var newUser = {
-                name: userName
-            };
-
-            var userStatus = _.find(_userStatuses, function (status) {
+            var userStatus = _.find(_sortedStatuses, function (status) {
                 return status.user === userName;
             });
 
-            if (!!userName && !!userStatus) {
-                newUser.date = userStatus.date;
-                newUser.message = userStatus.message;
-
-                _users.push(newUser);
+            if (!!userName) {
+                if (!_users[userName]) {
+                    _users[userName] = {};
+                }
+                _users[userName].date = _.get(userStatus, 'date');
+                _users[userName].message = _.get(userStatus, 'message');
             }
         });
     }

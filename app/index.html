@@ -62,7 +62,7 @@
 
     <article ng-controller="StatusController as statusCtrl">
         <section ng-if="!!user.name"
-                 ng-repeat="user in statusCtrl.users | orderUsers track by user.name">
+                 ng-repeat="user in statusCtrl.users | orderUsers:'statusList' track by user.name">
             <header>
                 <h4>{{user.name}}</h4>
                 <span>{{user.date | date}}</span>

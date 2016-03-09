@@ -171,10 +171,22 @@ app.controller('StatusController', function (StatusService) {
 });
 
 app.filter('orderUsers', function () {
-    var lastList = undefined;
+    var lastLists = {};
 
-    return function orderUsersFilter(userMap) {
-        var newList = _.map(userMap, generateNewUser);
+    return function orderUsersFilter(userMap, mapName) {
+        var userList = _.map(userMap, generateNewUser);
+        var newList = _.sortBy(userList, 'date').reverse();
+
+        if (!!mapName) {
+            if (JSON.stringify(lastLists[mapName]) !== JSON.stringify(newList)) {
+                lastLists[mapName] = newList;
+            }
+
+            return lastLists[mapName];
+        } else {
+            //FIXME: digest loop with no name
+            return newList;
+        }
 
         function generateNewUser(status, name) {
             var newUser = {
@@ -186,10 +198,5 @@ app.filter('orderUsers', function () {
             return newUser;
         }
 
-        if (JSON.stringify(lastList) !== JSON.stringify(newList)) {
-            lastList = newList;
-        }
-
-        return lastList;
     }
 });

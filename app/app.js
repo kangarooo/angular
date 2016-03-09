@@ -190,7 +190,7 @@ app.controller('StatusController', function (StatusService) {
 });
 
 
-app.filter('orderUsers', function () {
+app.filter('orderUsers', function() {
 
     var lastLists = {};
 

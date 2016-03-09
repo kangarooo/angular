@@ -18,9 +18,15 @@
                     ng-click="mainCtrl.removeUser()"
                     class="btn btn-warning navbar-btn">Logout
             </button>
+            <button type="button"
+            ng-if="mainCtrl.hasUser()"
+            ng-click="mainCtrl.removeUser()"
+             class="btn btn-danger">Logout {{mainCtrl.getUsername()}}</button>
+            <button type="button"
+            ng-if="mainCtrl.hasUser()"
+            ng-click="mainCtrl.removeUser()" class="btn btn-warning">Warning Logout - {{mainCtrl.getUsername()}}</button>
         </div>
-        <button type="button" class="btn btn-danger">Logout</button>
-        <button type="button" class="btn btn-warning" ng-if="mainCtrl.hasUser()" ng-click"mainCtrl.removeUser()">Warning Logout - {{mainCtrl.getUsername()}}</button>
+
 
         <!--  -->
 
@@ -70,7 +76,7 @@
             <!-- <input class="form-control" type="date" ng-model="userCtrl.date"/> -->
 
         </div>
-        <button class="btn btn-default" type="submit">Set status</button>
+        <button class="btn btn-default" type="submit">Set {{mainCtrl.getUsername()}} status</button>
     </form>
 
     <hr/>

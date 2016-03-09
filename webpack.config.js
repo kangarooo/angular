@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-module.e
-=======
 module.exports = {
     entry: {
         app: ['./app/app.js']
@@ -25,4 +22,3 @@ module.exports = {
         port: 8090
     }
 };
->>>>>>> techer/master

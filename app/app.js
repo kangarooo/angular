@@ -1,3 +1,9 @@
+require('lodash');
+require('angular');
+require('angular-material');
+
+require('./app.css');
+
 var app = angular.module('firstApp', []);
 
 app.service('UserService', function () {
@@ -77,6 +83,7 @@ app.service('StatusService', function ($http, $timeout) {
 
             $http(_postRequest).then(__updateStatuses);
 
+            //FIXME: undefined in Firefox 44
             function __updateStatuses(res) {
                 if (!!res) {
                     _statuses.push(res.data);
@@ -116,6 +123,8 @@ app.service('StatusService', function ($http, $timeout) {
 
 app.controller('MainController', function (UserService) {
     var vm = this;
+
+    console.log('Application initialized.');
 
     vm.hasUser = UserService.hasUser;
     vm.getUsername = UserService.getUsername;

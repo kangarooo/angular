@@ -2,11 +2,10 @@
 <html ng-app="firstApp">
 
 <head>
-    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
 </head>
 
 <body ng-controller="MainController as mainCtrl">
-<nav class="navbar navbar-default">
+<md-toolbar class="navbar navbar-default">
     <div class="container-fluid">
         <div class="navbar-header">
             <a class="navbar-brand" href="#">
@@ -20,7 +19,7 @@
             </button>
         </div>
     </div>
-</nav>
+</md-toolbar>
 
 <div id="guest-space"
      class="container"
@@ -74,8 +73,6 @@
 
 </div>
 
-<script src="bower_components/lodash/dist/lodash.js"></script>
-<script src="bower_components/angular/angular.js"></script>
-<script src="app.js"></script>
+<script src="bundle.js"></script>
 </body>
 </html>

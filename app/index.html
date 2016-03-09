@@ -5,21 +5,20 @@
 </head>
 
 <body ng-controller="MainController as mainCtrl">
-<md-toolbar class="navbar navbar-default">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="#">
+<md-content>
+    <md-toolbar>
+        <h1>
+            <a href="#">
                 <span>MyFacebook</span>
                 <span ng-if="mainCtrl.hasUser()"> - {{mainCtrl.getUsername()}}</span>
             </a>
-            <button type="button"
-                    ng-if="mainCtrl.hasUser()"
-                    ng-click="mainCtrl.removeUser()"
-                    class="btn btn-warning navbar-btn">Logout
-            </button>
-        </div>
-    </div>
-</md-toolbar>
+        </h1>
+        <md-button type="button"
+                   ng-if="mainCtrl.hasUser()"
+                   ng-click="mainCtrl.removeUser()">Logout
+        </md-button>
+    </md-toolbar>
+</md-content>
 
 <div id="guest-space"
      class="container"

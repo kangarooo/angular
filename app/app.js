@@ -1,10 +1,14 @@
-require('lodash');
-require('angular');
-require('angular-material');
+import 'angular-material/angular-material.css';
+
+import 'lodash';
+import 'angular';
+import angularMaterial from 'angular-material';
 
 require('./app.css');
 
-var app = angular.module('firstApp', []);
+var app = angular.module('firstApp', [
+    angularMaterial
+]);
 
 app.service('UserService', function () {
     var service = this;

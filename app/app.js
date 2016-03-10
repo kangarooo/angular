@@ -167,9 +167,11 @@ app.service('StatusService', function ($http, $timeout, TIMEOUTS) {
         if (_.isEmpty(username)) {
             return [];
         } else {
-            return _.filter(_statuses, function(status) {
+            var filteredStatuses = _.filter(_statuses, function(status) {
                 return status.user === username;
             });
+
+            return _.sortBy(filteredStatuses, 'date').reverse();
         }
     }
 
@@ -275,7 +277,7 @@ app.controller('StatusController', function (StatusService, $mdDialog, TIMEOUTS)
         var userDate = new Date(user.date);
 
         return (now - userDate) < TIMEOUTS.COMET * 2;
-    }
+    };
 
     vm.showHistory = function (user) {
         $mdDialog.show({
@@ -293,16 +295,15 @@ app.controller('HistoryController', function($mdDialog, StatusService, User){
     var vm = this;
 
     vm.username = User.name;
-
     vm.refresh = _refresh;
+
 
     _refresh();
 
     function _refresh() {
-      vm.statuses = StatusService.getStatuses(User.name);
+        vm.statuses = StatusService.getStatuses(User.name);
     }
 
-    vm.statuses = StatusService.getStatuses(User.name);
 
     vm.close = function () {
         $mdDialog.hide();

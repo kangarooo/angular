@@ -9,21 +9,16 @@
         </div>
     </md-toolbar>
     <md-content layout-padding>
-      <md-list>
-        <md-list-item ng-repeat="status in historyCtrl.statuses" class="md-block">
-          <div class="md-list-item-text">
-                  <p>{{historyCtrl.statuses}}</p>
-                    <p>
-                    {{status.message}}
-                  </p>
+
+        <md-list>
+            <md-list-item ng-repeat="status in historyCtrl.statuses">
+                <div class="md-list-item-text" flex layout="row">
+                    <p><span>{{$index+1}}. </span>{{status.message}}</p>
                     <span flex></span>
-                    <p>
-                      {{status.date | date:'HH:mm:ss'}}
-                    </p>
+                    <p>{{status.date | date: 'HH:mm:ss'}}</p>
+                </div>
+            </md-list-item>
 
-          </div>
-
-        </md-list-item>
         </md-list>
     </md-content>
 </md-dialog>

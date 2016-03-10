@@ -7,25 +7,20 @@
                   flex
                   name="statusForm"
                   ng-submit="userCtrl.setStatus()">
-                <md-input-container flex class="md-block">
+                <md-input-container class="md-block">
                     <input type="text"
                            md-autofocus
                            flex
                            required
                            ng-model="userCtrl.message"
                            placeholder="E.g. 'HELLO FRIENDS!'"/>
-                </md-input-container>
-                <div flex
-                     class="md-block"
-                     layout="row">
                     <md-button class="md-raised md-primary"
                                type="submit">Set {{mainCtrl.getUsername()}} status
                     </md-button>
                     <md-button class="md-raised"
-                               type="reset">
-                        Clear
+                               type="reset">Clear
                     </md-button>
-                </div>
+                </md-input-container>
             </form>
         </md-whiteframe>
         <md-list ng-controller="StatusController as statusCtrl">

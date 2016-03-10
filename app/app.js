@@ -41,6 +41,10 @@ app.constant('STATES', {
     USER: 'main.user'
 });
 
+app.constant('TIMEOUTS', {
+    COMET: 2000
+});
+
 app.run(function ($state, UserService, STATES) {
     if (UserService.hasUser()) {
         //go to status
@@ -71,21 +75,14 @@ app.service('UserService', function () {
         _user.username = username;
 
         if (_.isNull(username)) {
-<<<<<<< HEAD
 
-          localStorage.removeItem(USERNAME_KEY);
-        } else {
-        localStorage.setItem(USERNAME_KEY, username);
-      }
-
-=======
             localStorage.removeItem(USERNAME_KEY);
             return false;
         } else {
             localStorage.setItem(USERNAME_KEY, username);
             return true;
         }
->>>>>>> techer/master
+
     }
 
     function _removeUser() {
@@ -101,7 +98,7 @@ app.service('UserService', function () {
     }
 });
 
-app.service('StatusService', function ($http, $timeout) {
+app.service('StatusService', function ($http, $timeout, TIMEOUTS) {
     var service = this;
 
 
@@ -113,6 +110,7 @@ app.service('StatusService', function ($http, $timeout) {
 
     service.addStatus = _addStatus;
     service.getUsers = _getUsers;
+    service.getStatuses = _getStatuses;
 
 
     init();
@@ -128,8 +126,9 @@ app.service('StatusService', function ($http, $timeout) {
 
             _updateUsers();
 
+        }).finally(function () {
+            $timeout(init, TIMEOUTS.COMET);
 
-            $timeout(init, 4000);
         });
     }
 
@@ -162,6 +161,16 @@ app.service('StatusService', function ($http, $timeout) {
 
     function _getUsers() {
         return _users;
+    }
+
+    function _getStatuses(username) {
+        if (_.isEmpty(username)) {
+            return [];
+        } else {
+            return _.filter(_statuses, function(status) {
+                return status.user === username;
+            });
+        }
     }
 
     function _updateUsers() {
@@ -255,20 +264,54 @@ app.controller('UserController', function (UserService, StatusService) {
     }
 });
 
-app.controller('StatusController', function (StatusService) {
+app.controller('StatusController', function (StatusService, $mdDialog, TIMEOUTS) {
     var vm = this;
 
 
     vm.users = StatusService.getUsers();
+
+    vm.isRecent = function (user) {
+        var now = new Date();
+        var userDate = new Date(user.date);
+
+        return (now - userDate) < TIMEOUTS.COMET * 2;
+    }
+
+    vm.showHistory = function (user) {
+        $mdDialog.show({
+            template: require('./history.html'),
+            controller: 'HistoryController',
+            controllerAs: 'historyCtrl',
+            locals: {
+                'User': user
+            }
+        });
+    }
+});
+
+app.controller('HistoryController', function($mdDialog, StatusService, User){
+    var vm = this;
+
+    vm.username = User.name;
+
+    vm.statuses = StatusService.getStatuses(User.name);
+
+    vm.close = function () {
+        $mdDialog.hide();
+    }
 });
 
 
 app.filter('orderUsers', function () {
     var lastLists = {};
 
+    var STATUS_LIMIT = 6;
+
     return function orderUsersFilter(userMap, mapName) {
         var userList = _.map(userMap, generateNewUser);
-        var newList = _.sortBy(userList, 'date').reverse();
+        var sortedList = _.sortBy(userList, 'date').reverse();
+
+        var newList = _.slice(sortedList, 0, STATUS_LIMIT);
 
         if (!!mapName) {
             if (JSON.stringify(lastLists[mapName]) !== JSON.stringify(newList)) {

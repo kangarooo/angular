@@ -7,7 +7,15 @@
             <md-button ng-click="historyCtrl.close()">Close</md-button>
         </div>
     </md-toolbar>
-    <md-content>
-        <p>{{historyCtrl.statuses}}</p>
+    <md-content layout-padding>
+        <md-list>
+            <md-list-item ng-repeat="status in historyCtrl.statuses">
+                <div class="md-list-item-text" flex layout="row">
+                    <p><span>{{$index+1}}. </span>{{status.message}}</p>
+                    <span flex></span>
+                    <p>{{status.date | date: 'HH:mm:ss'}}</p>
+                </div>
+            </md-list-item>
+        </md-list>
     </md-content>
 </md-dialog>

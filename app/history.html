@@ -1,0 +1,13 @@
+<md-dialog>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>{{historyCtrl.username}}</h2>
+            <span flex></span>
+            <md-button ng-click="historyCtrl.refresh()">Refresh</md-button>
+            <md-button ng-click="historyCtrl.close()">Close</md-button>
+        </div>
+    </md-toolbar>
+    <md-content>
+        <p>{{historyCtrl.statuses}}</p>
+    </md-content>
+</md-dialog>

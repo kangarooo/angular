@@ -1,100 +1,11 @@
 <!DOCTYPE html>
 <html ng-app="firstApp">
-
 <head>
+    <meta charset="utf-8">
 </head>
 
-<body ng-controller="MainController as mainCtrl">
-<md-toolbar class="navbar navbar-default">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="#">
-                <span>MyFacebook</span>
-                <span ng-if="mainCtrl.hasUser()"> - {{mainCtrl.getUsername()}}</span>
-            </a>
-            <button type="button"
-                    ng-if="mainCtrl.hasUser()"
-                    ng-click="mainCtrl.removeUser()"
-                    class="btn btn-warning navbar-btn">Logout
-            </button>
-            <button type="button"
-            ng-if="mainCtrl.hasUser()"
-            ng-click="mainCtrl.removeUser()"
-             class="btn btn-danger">Logout {{mainCtrl.getUsername()}}</button>
-            <button type="button"
-            ng-if="mainCtrl.hasUser()"
-            ng-click="mainCtrl.removeUser()" class="btn btn-warning">Warning Logout - {{mainCtrl.getUsername()}}</button>
-        </div>
-
-
-        <!--  -->
-
-    </div>
-</md-toolbar>
-
-<div id="guest-space"
-     class="container"
-     ng-if="!mainCtrl.hasUser()"
-     ng-controller="LoginController as loginCtrl">
-    <form name="userForm" ng-submit="loginCtrl.login()">
-        <div class="form-group">
-            <input class="form-control"
-                   type="text"
-                   required
-                   autofocus
-                   ng-model="loginCtrl.username"
-                   placeholder="Username"/>
-            <input class="form-control"
-                   type="password"
-                   placeholder="Password"/>
-        </div>
-        <button type="submit">Login</button>
-    </form>
-</div>
-
-<div id="user-space"
-     class="container"
-     ng-if="mainCtrl.hasUser()"
-     ng-controller="UserController as userCtrl">
-    <form name="statusForm"
-          ng-submit="userCtrl.setStatus()">
-        <div class="form-group">
-            <input class="form-control"
-                   type="text"
-                   required
-                   ng-model="userCtrl.message"
-                   placeholder="E.g. 'HELLO FRIENDS!'"/>
-
-                   <!-- <textarea class="form-control"
-                          type="text"
-                          required
-                          ng-model="userCtrl.message"
-                          placeholder="E.g. 'HELLO FRIENDS!'"/>
-                   </textarea> -->
-
-            <!-- <input class="form-control" type="date" ng-model="userCtrl.date"/> -->
-
-        </div>
-        <button class="btn btn-default" type="submit">Set {{mainCtrl.getUsername()}} status</button>
-    </form>
-
-    <hr/>
-
-    <article ng-controller="StatusController as statusCtrl">
-
-        <section ng-if="!!user.name"
-                 ng-repeat="user in statusCtrl.users | orderUsers:'statusList' track by user.name">
-
-            <header>
-                <h4>{{user.name}}</h4>
-                <span>{{user.date | date}}</span>
-            </header>
-            <div>{{user.message}}</div>
-            <hr>
-        </section>
-    </article>
-
-</div>
+<body>
+<ui-view></ui-view>
 
 <script src="bundle.js"></script>
 </body>

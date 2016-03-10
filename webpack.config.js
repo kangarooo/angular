@@ -7,15 +7,27 @@ module.exports = {
         filename: 'bundle.js'
     },
     resolve: {
-       extensions: ['', '.js', '.css']
+        extensions: ['', '.js', '.css']
     },
     module: {
-      loaders: [
-          {
-              test: /\.css$/,
-              loader: 'style-loader!css-loader'
-          }
-      ]
+        loaders: [
+            {
+                test: /\.css$/,
+                loader: 'style-loader!css-loader'
+            },
+            {
+                test: /\.html$/,
+                loader: 'html-loader'
+            },
+            {
+                test: /\.js$/,
+                exclude: /node_modules/,
+                loader: 'babel-loader',
+                query: {
+                    presets: ['es2015']
+                }
+            }
+        ]
     },
     devServer: {
         contentBase: 'app',

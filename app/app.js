@@ -1,10 +1,55 @@
-require('lodash');
-require('angular');
-require('angular-material');
+//styles
+import 'angular-material/angular-material.css';
+import './app.css';
 
-require('./app.css');
+//basic libraries
+import 'lodash';
+import 'angular';
 
-var app = angular.module('firstApp', []);
+//additional libraries
+import angularMaterial from 'angular-material';
+import uiRouter from 'ui-router';
+
+var app = angular.module('firstApp', [
+    uiRouter,
+    angularMaterial
+]);
+
+app.config(function ($stateProvider, STATES) {
+    $stateProvider
+        .state(STATES.MAIN, {
+            abstract: true,
+            template: require('./main.html'),
+            controller: 'MainController',
+            controllerAs: 'mainCtrl'
+        })
+        .state(STATES.LOGIN, {
+            template: require('./login.html'),
+            controller: 'LoginController',
+            controllerAs: 'loginCtrl'
+        })
+        .state(STATES.USER, {
+            template: require('./user.html'),
+            controller: 'UserController',
+            controllerAs: 'userCtrl'
+        });
+});
+
+app.constant('STATES', {
+    MAIN: 'main',
+    LOGIN: 'main.login',
+    USER: 'main.user'
+});
+
+app.run(function ($state, UserService, STATES) {
+    if (UserService.hasUser()) {
+        //go to status
+        $state.go(STATES.USER);
+    } else {
+        //go to login
+        $state.go(STATES.LOGIN);
+    }
+});
 
 app.service('UserService', function () {
     var service = this;
@@ -26,16 +71,25 @@ app.service('UserService', function () {
         _user.username = username;
 
         if (_.isNull(username)) {
+<<<<<<< HEAD
 
           localStorage.removeItem(USERNAME_KEY);
         } else {
         localStorage.setItem(USERNAME_KEY, username);
       }
 
+=======
+            localStorage.removeItem(USERNAME_KEY);
+            return false;
+        } else {
+            localStorage.setItem(USERNAME_KEY, username);
+            return true;
+        }
+>>>>>>> techer/master
     }
 
     function _removeUser() {
-        _setUser(null);
+        return !_setUser(null);
     }
 
     function _hasUser() {
@@ -136,17 +190,25 @@ app.service('StatusService', function ($http, $timeout) {
 
 });
 
-app.controller('MainController', function (UserService) {
+app.controller('MainController', function ($state, UserService, STATES) {
     var vm = this;
 
     console.log('Application initialized.');
 
     vm.hasUser = UserService.hasUser;
     vm.getUsername = UserService.getUsername;
-    vm.removeUser = UserService.removeUser;
+    vm.logout = function () {
+        console.log('Will try to logout.');
+        if (UserService.removeUser()) {
+            console.log('User removed, moving to login.');
+            $state.go(STATES.LOGIN);
+        } else {
+            console.log('Logout failed.');
+        }
+    };
 });
 
-app.controller('LoginController', function (UserService) {
+app.controller('LoginController', function ($state, UserService, STATES) {
     var vm = this;
 
     vm.username = '';
@@ -154,7 +216,9 @@ app.controller('LoginController', function (UserService) {
     vm.login = _login;
 
     function _login() {
-        UserService.setUser(vm.username);
+        if (UserService.setUser(vm.username)) {
+            $state.go(STATES.USER);
+        }
     }
 });
 

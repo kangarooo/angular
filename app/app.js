@@ -294,6 +294,14 @@ app.controller('HistoryController', function($mdDialog, StatusService, User){
 
     vm.username = User.name;
 
+    vm.refresh = _refresh;
+
+    _refresh();
+
+    function _refresh() {
+      vm.statuses = StatusService.getStatuses(User.name);
+    }
+
     vm.statuses = StatusService.getStatuses(User.name);
 
     vm.close = function () {

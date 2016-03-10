@@ -1,77 +1,10 @@
 <!DOCTYPE html>
 <html ng-app="firstApp">
-
 <head>
+    <meta charset="utf-8">
 </head>
-
-<body ng-controller="MainController as mainCtrl">
-<md-content>
-    <md-toolbar>
-        <h1>
-            <a href="#">
-                <span>MyFacebook</span>
-                <span ng-if="mainCtrl.hasUser()"> - {{mainCtrl.getUsername()}}</span>
-            </a>
-        </h1>
-        <md-button type="button"
-                   ng-if="mainCtrl.hasUser()"
-                   ng-click="mainCtrl.removeUser()">Logout
-        </md-button>
-    </md-toolbar>
-</md-content>
-
-<div id="guest-space"
-     class="container"
-     ng-if="!mainCtrl.hasUser()"
-     ng-controller="LoginController as loginCtrl">
-    <form name="userForm" ng-submit="loginCtrl.login()">
-        <div class="form-group">
-            <input class="form-control"
-                   type="text"
-                   required
-                   autofocus
-                   ng-model="loginCtrl.username"
-                   placeholder="Username"/>
-            <input class="form-control"
-                   type="password"
-                   placeholder="Password"/>
-        </div>
-        <button type="submit">Login</button>
-    </form>
-</div>
-
-<div id="user-space"
-     class="container"
-     ng-if="mainCtrl.hasUser()"
-     ng-controller="UserController as userCtrl">
-    <form name="statusForm"
-          ng-submit="userCtrl.setStatus()">
-        <div class="form-group">
-            <input class="form-control"
-                   type="text"
-                   required
-                   ng-model="userCtrl.message"
-                   placeholder="E.g. 'HELLO FRIENDS!'"/>
-        </div>
-        <button class="btn btn-default" type="submit">Set status</button>
-    </form>
-
-    <hr/>
-
-    <article ng-controller="StatusController as statusCtrl">
-        <section ng-if="!!user.name"
-                 ng-repeat="user in statusCtrl.users | orderUsers:'statusList' track by user.name">
-            <header>
-                <h4>{{user.name}}</h4>
-                <span>{{user.date | date}}</span>
-            </header>
-            <div>{{user.message}}</div>
-            <hr>
-        </section>
-    </article>
-
-</div>
-
+<body>
+<ui-view></ui-view>
 <script src="bundle.js"></script>
 </body>
 </html>

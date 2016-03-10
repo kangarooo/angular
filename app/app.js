@@ -284,6 +284,7 @@ app.controller('StatusController', function (StatusService, $mdDialog, TIMEOUTS)
             template: require('./history.html'),
             controller: 'HistoryController',
             controllerAs: 'historyCtrl',
+            clickOutsideToClose: true;
             locals: {
                 'User': user
             }

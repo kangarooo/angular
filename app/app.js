@@ -316,6 +316,10 @@ app.service('MfDialog', function ($mdDialog) {
     var historyStack = [];
 
     service.show = function (options) {
+        if (_sameDialogs(_.last(historyStack), options)) {
+            return;
+        }
+
         historyStack.push(options);
         console.debug(LOG_PREFIX + 'Adding new dialog to the history:');
         console.debug(LOG_PREFIX + JSON.stringify(options.controller));
@@ -326,7 +330,7 @@ app.service('MfDialog', function ($mdDialog) {
         function _handleHistory(dialogOptions) {
             console.debug(LOG_PREFIX + 'Checking the history status.');
             _showHistory();
-            if (_.last(historyStack).controller === dialogOptions.controller) {
+            if (_sameDialogs(_.last(historyStack), dialogOptions)) {
                 historyStack.pop();
 
                 var prevDialog = _.last(historyStack);
@@ -340,8 +344,13 @@ app.service('MfDialog', function ($mdDialog) {
             }
         }
 
+<<<<<<< HEAD
         function _sampleDialog(first, second) {
           return JSON.stringify(first) 
+=======
+        function _sameDialogs(first, second) {
+            return JSON.stringify(first) === JSON.stringify(second);
+>>>>>>> techer/master
         }
     };
 

@@ -339,6 +339,10 @@ app.service('MfDialog', function ($mdDialog) {
                 _showHistory();
             }
         }
+
+        function _sampleDialog(first, second) {
+          return JSON.stringify(first) 
+        }
     };
 
     service.hide = function () {

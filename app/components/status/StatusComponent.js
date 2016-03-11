@@ -2,7 +2,7 @@ var module_name = 'firstApp.components.status';
 
 var statusModule = angular.module(module_name, []);
 
-statusModule.controller('MfStatusController', function ($sce, $mdDialog) {
+statusModule.controller('MfStatusController', function ($sce, MfDialog) {
     var vm = this;
 
     var YT_REGEX = /^(http|https):\/\/(youtu\.be\/|((www\.|)youtube\.com\/watch\?v=))([a-zA-Z0-9]+).*$/i;
@@ -15,7 +15,7 @@ statusModule.controller('MfStatusController', function ($sce, $mdDialog) {
     }
 
     function _showYT(url) {
-        $mdDialog.show({
+        MfDialog.show({
             template: require('./yt.html'),
             controller: 'YTController',
             controllerAs: 'ytCtrl',

@@ -12,7 +12,8 @@ import uiRouter from 'ui-router';
 
 var app = angular.module('firstApp', [
     uiRouter,
-    angularMaterial
+    angularMaterial,
+    require('./components')
 ]);
 
 app.config(function ($stateProvider, STATES) {
@@ -257,7 +258,7 @@ app.controller('StatusController', function ($sce, StatusService, $mdDialog, TIM
     vm.isRecent = _isRecent;
     vm.showHistory = _showHistory;
     vm.isYT = _isYT;
-    vm.getYT = _getYT;
+    vm.showYT = _showYT;
 
     function _isRecent(user) {
         var now = new Date();
@@ -282,10 +283,33 @@ app.controller('StatusController', function ($sce, StatusService, $mdDialog, TIM
         return YT_REGEX.test(url);
     }
 
+    function _showYT(url) {
+        $mdDialog.show({
+            template: require('./yt.html'),
+            controller: 'YTController',
+            controllerAs: 'ytCtrl',
+            clickOutsideToClose: true,
+            locals: {
+                Url: _getYT(url)
+            }
+        });
+    }
+
     function _getYT(url) {
-        var video_url = 'https://youtube.com/embed/' + 'YQHsXMglC9A';
+        var video_id = _.last(YT_REGEX.exec(url));
+
+        var video_url = 'https://youtube.com/embed/' + video_id;
         return $sce.trustAsResourceUrl(video_url);
     }
+});
+
+app.controller('YTController', function(Url){
+    var vm = this;
+
+    console.debug('Initializing YT controller.');
+    console.debug('YT URL: ' + Url);
+
+    vm.video_url = Url;
 });
 
 app.controller('HistoryController', function ($mdDialog, StatusService, User) {

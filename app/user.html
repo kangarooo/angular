@@ -30,7 +30,8 @@
                 <div class="md-list-item-text" layout="column">
                     <h3 class="user-link" ng-click="statusCtrl.showHistory(user)">{{user.name}}</h3>
                     <h4>{{user.date | date:'MMMM dd yyyy, HH:mm:ss'}}</h4>
-                    <p>{{user.message}}</p>
+
+                    <mf-status user="user"></mf-status>
                 </div>
                 <md-divider></md-divider>
             </md-list-item>

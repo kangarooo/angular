@@ -12,7 +12,8 @@ import uiRouter from 'ui-router';
 
 var app = angular.module('firstApp', [
     uiRouter,
-    angularMaterial
+    angularMaterial,
+    require('./components')
 ]);
 
 app.config(function ($stateProvider, STATES) {
@@ -167,7 +168,7 @@ app.service('StatusService', function ($http, $timeout, TIMEOUTS) {
         if (_.isEmpty(username)) {
             return [];
         } else {
-            var filteredStatuses = _.filter(_statuses, function(status) {
+            var filteredStatuses = _.filter(_statuses, function (status) {
                 return status.user === username;
             });
 
@@ -266,25 +267,30 @@ app.controller('UserController', function (UserService, StatusService) {
     }
 });
 
-app.controller('StatusController', function (StatusService, $mdDialog, TIMEOUTS) {
+app.controller('StatusController', function ($sce, StatusService, $mdDialog, TIMEOUTS) {
     var vm = this;
 
 
     vm.users = StatusService.getUsers();
 
-    vm.isRecent = function (user) {
+    vm.isRecent = _isRecent;
+    vm.showHistory = _showHistory;
+
+    function _isRecent(user) {
         var now = new Date();
         var userDate = new Date(user.date);
 
         return (now - userDate) < TIMEOUTS.COMET * 2;
-    };
+    }
 
-    vm.showHistory = function (user) {
+    function _showHistory(user) {
         $mdDialog.show({
             template: require('./history.html'),
             controller: 'HistoryController',
             controllerAs: 'historyCtrl',
-            clickOutsideToClose: true;
+
+            clickOutsideToClose: true,
+
             locals: {
                 'User': user
             }
@@ -292,7 +298,16 @@ app.controller('StatusController', function (StatusService, $mdDialog, TIMEOUTS)
     }
 });
 
-app.controller('HistoryController', function($mdDialog, StatusService, User){
+app.controller('YTController', function(Url){
+    var vm = this;
+
+    console.debug('Initializing YT controller.');
+    console.debug('YT URL: ' + Url);
+
+    vm.video_url = Url;
+});
+
+app.controller('HistoryController', function ($mdDialog, StatusService, User) {
     var vm = this;
 
     vm.username = User.name;

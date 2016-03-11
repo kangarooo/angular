@@ -13,7 +13,7 @@
         <md-list>
             <md-list-item ng-repeat="status in historyCtrl.statuses">
                 <div class="md-list-item-text" flex layout="row">
-                    <p><span>{{$index+1}}. </span>{{status.message}}</p>
+                    <mf-status user="status"></mf-status>
                     <span flex></span>
                     <p>{{status.date | date: 'HH:mm:ss'}}</p>
                 </div>

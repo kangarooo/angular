@@ -29,11 +29,8 @@
                 <div class="md-list-item-text" layout="column">
                     <h3 class="user-link" ng-click="statusCtrl.showHistory(user)">{{user.name}}</h3>
                     <h4>{{user.date | date:'MMMM dd yyyy, HH:mm:ss'}}</h4>
-                    <p ng-if="!statusCtrl.isYT(user.message)">{{user.message}}</p>
-                    <md-button class="md-raised md-warn"
-                               ng-if="statusCtrl.isYT(user.message)"
-                               ng-click="statusCtrl.showYT(user.message)">Watch video
-                    </md-button>
+
+                    <mf-status user="user"></mf-status>
                 </div>
                 <md-divider></md-divider>
             </md-list-item>

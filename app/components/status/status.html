@@ -1,1 +1,5 @@
-<p>THIS IS USER STATUS!</p>
+<p ng-if="!$ctrl.isYT($ctrl.user.message)">{{$ctrl.user.message}}</p>
+<md-button class="md-raised md-primary"
+           ng-if="$ctrl.isYT($ctrl.user.message)"
+           ng-click="$ctrl.showYT($ctrl.user.message)">Watch video
+</md-button>

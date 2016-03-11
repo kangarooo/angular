@@ -251,14 +251,10 @@ app.controller('UserController', function (UserService, StatusService) {
 app.controller('StatusController', function ($sce, StatusService, $mdDialog, TIMEOUTS) {
     var vm = this;
 
-    var YT_REGEX = /^(http|https):\/\/(youtu\.be\/|((www\.|)youtube\.com\/watch\?v=))([a-zA-Z0-9]+).*$/i;
-
     vm.users = StatusService.getUsers();
 
     vm.isRecent = _isRecent;
     vm.showHistory = _showHistory;
-    vm.isYT = _isYT;
-    vm.showYT = _showYT;
 
     function _isRecent(user) {
         var now = new Date();
@@ -277,29 +273,6 @@ app.controller('StatusController', function ($sce, StatusService, $mdDialog, TIM
                 'User': user
             }
         });
-    }
-
-    function _isYT(url) {
-        return YT_REGEX.test(url);
-    }
-
-    function _showYT(url) {
-        $mdDialog.show({
-            template: require('./yt.html'),
-            controller: 'YTController',
-            controllerAs: 'ytCtrl',
-            clickOutsideToClose: true,
-            locals: {
-                Url: _getYT(url)
-            }
-        });
-    }
-
-    function _getYT(url) {
-        var video_id = _.last(YT_REGEX.exec(url));
-
-        var video_url = 'https://youtube.com/embed/' + video_id;
-        return $sce.trustAsResourceUrl(video_url);
     }
 });
 

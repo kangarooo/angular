@@ -307,6 +307,49 @@ app.controller('YTController', function(Url){
     vm.video_url = Url;
 });
 
+
+app.service('MfDialog', function($mdDialog){
+
+  var service = this;
+
+  var LOG_PREFIX = '[MfDialog]';
+
+  var historyStack = [];
+
+  service.show = function(options) {
+    historyStack.push(options);
+    console.debug(LOG_PREFIX + 'Adding new dialog to the history:');
+    console.debug(LOG_PREFIX + JSON.stringify(options.);
+    _showHistory();
+
+    $mdDialog.show(options).finally(_handleHistory);
+
+      function _handleHistory() {
+        if (_.last(historyStack).length <= 1) {
+          historyStack.pop();
+
+          var prevDialog = _.last(historyStack);
+
+          if (!!prevDialog) {
+            //FIXME: for > 2 elements in histor, doesnt shit WHAAAT?  WHY YOU REMNOVE SO FAAAAAST
+            $mdDialog.show(prevDialog).finally(_handleHistory);;
+          }
+        }
+        _showHistory();
+    });
+  };
+
+
+});
+
+
+$service.hide = function() {
+  $md
+}
+
+console.debug(LOG_PREFIX + Dialogs history:);
+console.debug(LOG_PREFIX + JSON.stringify(_.map));
+
 app.controller('HistoryController', function ($mdDialog, StatusService, User) {
     var vm = this;
 

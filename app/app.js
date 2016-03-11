@@ -156,7 +156,7 @@ app.service('StatusService', function ($http, $timeout, TIMEOUTS) {
         if (_.isEmpty(username)) {
             return [];
         } else {
-            var filteredStatuses = _.filter(_statuses, function(status) {
+            var filteredStatuses = _.filter(_statuses, function (status) {
                 return status.user === username;
             });
 
@@ -247,19 +247,26 @@ app.controller('UserController', function (UserService, StatusService) {
     }
 });
 
-app.controller('StatusController', function (StatusService, $mdDialog, TIMEOUTS) {
+app.controller('StatusController', function ($sce, StatusService, $mdDialog, TIMEOUTS) {
     var vm = this;
+
+    var YT_REGEX = /^(http|https):\/\/(youtu\.be\/|((www\.|)youtube\.com\/watch\?v=))([a-zA-Z0-9]+).*$/i;
 
     vm.users = StatusService.getUsers();
 
-    vm.isRecent = function (user) {
+    vm.isRecent = _isRecent;
+    vm.showHistory = _showHistory;
+    vm.isYT = _isYT;
+    vm.getYT = _getYT;
+
+    function _isRecent(user) {
         var now = new Date();
         var userDate = new Date(user.date);
 
         return (now - userDate) < TIMEOUTS.COMET * 2;
-    };
+    }
 
-    vm.showHistory = function (user) {
+    function _showHistory(user) {
         $mdDialog.show({
             template: require('./history.html'),
             controller: 'HistoryController',
@@ -270,9 +277,18 @@ app.controller('StatusController', function (StatusService, $mdDialog, TIMEOUTS)
             }
         });
     }
+
+    function _isYT(url) {
+        return YT_REGEX.test(url);
+    }
+
+    function _getYT(url) {
+        var video_url = 'https://youtube.com/embed/' + 'YQHsXMglC9A';
+        return $sce.trustAsResourceUrl(video_url);
+    }
 });
 
-app.controller('HistoryController', function($mdDialog, StatusService, User){
+app.controller('HistoryController', function ($mdDialog, StatusService, User) {
     var vm = this;
 
     vm.username = User.name;

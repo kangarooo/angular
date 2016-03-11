@@ -248,7 +248,7 @@ app.controller('UserController', function (UserService, StatusService) {
     }
 });
 
-app.controller('StatusController', function ($sce, StatusService, $mdDialog, TIMEOUTS) {
+app.controller('StatusController', function (StatusService, MfDialog, TIMEOUTS) {
     var vm = this;
 
     vm.users = StatusService.getUsers();
@@ -264,7 +264,7 @@ app.controller('StatusController', function ($sce, StatusService, $mdDialog, TIM
     }
 
     function _showHistory(user) {
-        $mdDialog.show({
+        MfDialog.show({
             template: require('./history.html'),
             controller: 'HistoryController',
             controllerAs: 'historyCtrl',
@@ -276,7 +276,7 @@ app.controller('StatusController', function ($sce, StatusService, $mdDialog, TIM
     }
 });
 
-app.controller('YTController', function(Url){
+app.controller('YTController', function (Url) {
     var vm = this;
 
     console.debug('Initializing YT controller.');
@@ -285,7 +285,50 @@ app.controller('YTController', function(Url){
     vm.video_url = Url;
 });
 
-app.controller('HistoryController', function ($mdDialog, StatusService, User) {
+app.service('MfDialog', function ($mdDialog) {
+    var service = this;
+
+    var LOG_PREFIX = '[MfDialog]';
+
+    var historyStack = [];
+
+    service.show = function (options) {
+        historyStack.push(options);
+        console.debug(LOG_PREFIX + 'Adding new dialog to the history:');
+        console.debug(LOG_PREFIX + JSON.stringify(options.controller));
+        _showHistory();
+
+        $mdDialog.show(options).finally(_handleHistory.bind(undefined, options));
+
+        function _handleHistory(dialogOptions) {
+            console.debug(LOG_PREFIX + 'Checking the history status.');
+            _showHistory();
+            if (_.last(historyStack).controller === dialogOptions.controller) {
+                historyStack.pop();
+
+                var prevDialog = _.last(historyStack);
+
+                if (!!prevDialog) {
+                    $mdDialog.show(prevDialog).finally(_handleHistory.bind(undefined, prevDialog));
+                }
+
+                console.debug(LOG_PREFIX + 'History was updated.');
+                _showHistory();
+            }
+        }
+    };
+
+    service.hide = function () {
+        $mdDialog.hide();
+    };
+
+    function _showHistory() {
+        console.debug(LOG_PREFIX + 'Dialogs history:');
+        console.debug(LOG_PREFIX + JSON.stringify(_.map(historyStack, 'controller')));
+    }
+});
+
+app.controller('HistoryController', function (MfDialog, StatusService, User) {
     var vm = this;
 
     vm.username = User.name;
@@ -298,7 +341,7 @@ app.controller('HistoryController', function ($mdDialog, StatusService, User) {
     }
 
     vm.close = function () {
-        $mdDialog.hide();
+        MfDialog.hide();
     }
 });
 
